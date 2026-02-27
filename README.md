@@ -7,54 +7,50 @@
  본 프로젝트는 스마트 팩토리의 품질 관리 자동화를 위해 **YOLOv8 객체 탐지**와 **RoboDK 로봇 시뮬레이션**을 통합한 엔드투엔드(End-to-End) 솔루션을 제안합니다. 고사양 GPU(RTX 4080 SUPER) 환경에서 최적의 해상도 전략을 도출하고, 이를 다관절 로봇(UR10)의 분류 공정에 실시간 연동하였습니다.
 
 ## 📺 시연 영상 (Demo)
-
-[[[[URL]]]]
-
+[![Demo Video](https://img.youtube.com/vi/dQw4w9WgXcQ/0.jpg)](https://youtu.be/zU09HaK3Cxs)
 ## 📂 프로젝트 구조 (Project Structure)
+```text
 robotic-weld-inspection-system/
 │
-├─ ai/ # AI 모델 및 추론 스크립트
-│ ├─ configs/ # 설정 파일
-│ │ └─ welding.yaml
-│ ├─ inferenrce/ # 추론용 스크립트
-│ │ └─ inference.py
-│ ├─ models/ # 모델 가중치 및 학습 스크립트
-│ │ ├─ pretrained/ # 사전 학습 모델
-│ │ │ └─ yolov8s.pt
-│ │ ├─ trained/ # 학습 완료 모델 (해상도별)
-│ │ │ ├─ res320/weights/
-│ │ │ ├─ res480/weights/
-│ │ │ └─ res640/weights/
-│ │ └─ training/ # 학습 스크립트
-│ │ ├─ train320.py
-│ │ ├─ train480.py
-│ │ └─ train640.py
-│ ├─ results/ # 학습/추론 결과
-│ │ ├─ res320/
-│ │ ├─ res480/
-│ │ └─ res640/
-│ └─ utils/
-│ └─ data_download.py
-│
-├─ robotics/ # 로봇 시뮬레이션 관련 파일
-│ ├─ imgs/ # 용접 템플릿 이미지
-│ ├─ objects/ # 용접 템플릿 3D 모델
-│ │ ├─ WeldTpl_01/
-│ │ ├─ WeldTpl_02/
-│ │ ├─ WeldTpl_03/
-│ │ ├─ WeldTpl_04/
-│ │ ├─ WeldTpl_05/
-│ │ ├─ WeldTpl_06/
-│ │ ├─ WeldTpl_07/
-│ │ ├─ WeldTpl_08/
-│ │ └─ WeldTpl_09/
-│ └─ scripts/ # 시뮬레이션 제어 스크립트
-│ ├─ PartsToConveyor.py
-│ ├─ PartsToPallet.py
-│ ├─ PrepareSimulation.py
-│ ├─ SetSimulationParams.py
-│ └─ SimulateCamera.py
-│
+├─ ai/  # AI 모델 및 추론 스크립트
+│   ├─ configs/
+│   │   └─ welding.yaml
+│   ├─ inference/
+│   │   └─ inference.py
+│   ├─ models/
+│   │   ├─ pretrained/
+│   │   │   └─ yolov8s.pt
+│   │   ├─ trained/
+│   │   │   ├─ res320/weights/
+│   │   │   ├─ res480/weights/
+│   │   │   └─ res640/weights/
+│   │   └─ training/
+│   │       ├─ train320.py
+│   │       ├─ train480.py
+│   │       └─ train640.py
+│   ├─ results/
+│   │   ├─ res320/
+│   │   ├─ res480/
+│   │   └─ res640/
+│   └─ utils/
+│       └─ data_download.py
+├─ robotics/  # 로봇 시뮬레이션 관련 파일
+│   ├─ imgs/
+│   ├─ objects/
+│   │   ├─ WeldTpl_01/
+│   │   ├─ WeldTpl_02/
+│   │   ├─ WeldTpl_03/
+│   │   ├─ WeldTpl_04/
+│   │   ├─ WeldTpl_05/
+│   │   ├─ WeldTpl_06/
+│   │   ├─ WeldTpl_07/
+│   │   └─ WeldTpl_08/
+│   └─ scripts/
+│       ├─ PartsToConveyor.py
+│       ├─ PartsToPallet.py
+│       ├─ PrepareSimulation.py
+│       ├─ SetSimulationParams.py
+│       └─ SimulateCamera.py
 ├─ .gitignore
 └─ README.md
 
@@ -62,11 +58,11 @@ robotic-weld-inspection-system/
 
 입력 해상도 변화에 따른 성능 및 추론 속도(Inference Speed) 비교 결과입니다.
 
-| **Input Size**   | **mAP50**  | **Precision** | **Recall** | **Speed (RTX 4080s)** |
-| ---------------- | ---------- | ------------- | ---------- | --------------------- |
-| **640px**        | 0.6456     | 0.6726        | **0.6646** | 2.8ms                 |
-| **480px (Best)** | **0.6523** | 0.6461        | 0.6516     | **2.1ms**             |
-| **320px**        | 0.6241     | **0.7123**    | 0.5870     | 1.5ms                 |
+| Input Size      | mAP50   | Precision | Recall  | Speed (RTX 4080s)|
+|-----------------|---------|-----------|---------|------------------|
+| 640px           | 0.6456  | 0.6726    | 0.6646  | 2.8ms            |
+| 480px (Best)    | 0.6523  | 0.6461    | 0.6516  | 2.1ms            |
+| 320px           | 0.6241  | 0.7123    | 0.5870  | 1.5ms            |
 
 - **최적 모델 선정**: 정확도와 연산 효율성을 동시에 만족하는 **480px** 설정을 최종 시스템에 적용함.
 
