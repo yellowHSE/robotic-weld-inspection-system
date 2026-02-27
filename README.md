@@ -7,7 +7,8 @@
  본 프로젝트는 스마트 팩토리의 품질 관리 자동화를 위해 **YOLOv8 객체 탐지**와 **RoboDK 로봇 시뮬레이션**을 통합한 엔드투엔드(End-to-End) 솔루션을 제안합니다. 고사양 GPU(RTX 4080 SUPER) 환경에서 최적의 해상도 전략을 도출하고, 이를 다관절 로봇(UR10)의 분류 공정에 실시간 연동하였습니다.
 
 ## 📺 시연 영상 (Demo)
-[![Demo Video](https://img.youtube.com/vi/dQw4w9WgXcQ/0.jpg)](https://youtu.be/zU09HaK3Cxs)
+[![Demo Video](https://img.youtube.com/vi/zU09HaK3Cxs/0.jpg)](https://www.youtube.com/watch?v=zU09HaK3Cxs)
+
 ## 📂 프로젝트 구조 (Project Structure)
 ```text
 robotic-weld-inspection-system/
@@ -53,7 +54,7 @@ robotic-weld-inspection-system/
 │       └─ SimulateCamera.py
 ├─ .gitignore
 └─ README.md
-
+```
 ## 📊 실험 결과 (AI Performance)
 
 입력 해상도 변화에 따른 성능 및 추론 속도(Inference Speed) 비교 결과입니다.
