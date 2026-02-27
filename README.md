@@ -1,12 +1,14 @@
 # 🤖 📷 Robotic-Weld-Inspection-System
 
+
 > **자원 제약 환경에서의 YOLOv8 기반 용접 결함 탐지 및 로봇 시뮬레이션 통합 자동화 시스템 연구**
+
 
  본 프로젝트는 스마트 팩토리의 품질 관리 자동화를 위해 **YOLOv8 객체 탐지**와 **RoboDK 로봇 시뮬레이션**을 통합한 엔드투엔드(End-to-End) 솔루션을 제안합니다. 고사양 GPU(RTX 4080 SUPER) 환경에서 최적의 해상도 전략을 도출하고, 이를 다관절 로봇(UR10)의 분류 공정에 실시간 연동하였습니다.
 
 ## 📺 시연 영상 (Demo)
 
-------
+[[[[URL]]]]
 
 ## 📂 파일 구조 (Project Structure)
 
@@ -37,7 +39,6 @@ Plaintext
 └── README.md                   # 프로젝트 개요 및 매뉴얼
 ```
 
-------
 
 ## 📊 실험 결과 (AI Performance)
 
@@ -51,7 +52,6 @@ Plaintext
 
 - **최적 모델 선정**: 정확도와 연산 효율성을 동시에 만족하는 **480px** 설정을 최종 시스템에 적용함.
 
-------
 
 ## 🚀 시작하기 (How to Run)
 
@@ -73,9 +73,8 @@ pip install -r requirements.txt
 2. **파라미터 설정**: `src/SetSimulationParams.py`를 실행하여 공정 조건을 입력합니다.
 3. **통합 공정 가동**: `src/PartsToPallet.py`를 실행하면 YOLOv8 모델이 카메라 뷰를 실시간 분석하여 로봇 분류를 시작합니다.
 
-------
 
 ## 📜 라이선스 및 참고 문헌
 
-- 본 프로젝트는 **Kaggle Welding Defect Dataset**과 **Ultralytics YOLOv8**을 활용하였습니다.
+- 본 프로젝트는 **Kaggle Welding Defect Dataset**을 활용하였습니다.
 - 자세한 이론적 배경은 `docs/report_final.pdf`를 참조해 주시기 바랍니다.
