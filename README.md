@@ -10,35 +10,53 @@
 
 [[[[URL]]]]
 
-## 📂 파일 구조 (Project Structure)
-
-저장소의 논리적 구성을 위해 다음과 같이 구조화되었습니다.
-
-Plaintext
-
-```
-.
-├── src/                        # 로봇 제어 및 공정 시뮬레이션 스크립트
-│   ├── SetSimulationParams.py  # 실험 파라미터(속도, 크기 등) 설정
-│   ├── PrepareSimulation.py    # 객체 및 용접 라벨 자동 생성 로직
-│   ├── SimulateCamera.py       # 비전 검사 뷰 및 카메라 설정
-│   ├── PartsToConveyor.py      # 로봇 1: 투입 및 이송 제어
-│   ├── PartsToPallet.py        # 로봇 2: YOLO 연동 검사 및 분류 적재
-│   └── HMI_Display.py          # 실시간 상태 모니터링 대시보드
-├── models/                     # 학습된 YOLOv8 모델 가중치
-│   ├── best_640.pt             # 640px 해상도 최적 가중치
-│   └── best_480.pt             # 480px 해상도 최적 가중치 (추천 모델)
-├── config/                     # 데이터셋 및 환경 설정 파일
-│   ├── welding.yaml            # YOLO 데이터셋 경로 및 클래스 정의
-│   └── station_env.rdk         # RoboDK 시뮬레이션 스테이션 파일
-├── docs/                       # 보고서 및 시각화 자료
-│   ├── report_final.pdf        # 최종 연구 결과 보고서
-│   └── assets/                 # 분석 그래프(mAP, Loss) 및 결과 이미지
-├── train.py                    # 모델 학습 및 검증 실행 스크립트
-├── requirements.txt            # 라이브러리 의존성 파일
-└── README.md                   # 프로젝트 개요 및 매뉴얼
-```
-
+## 📂 프로젝트 구조 (Project Structure)
+robotic-weld-inspection-system/
+│
+├─ ai/ # AI 모델 및 추론 스크립트
+│ ├─ configs/ # 설정 파일
+│ │ └─ welding.yaml
+│ ├─ inferenrce/ # 추론용 스크립트
+│ │ └─ inference.py
+│ ├─ models/ # 모델 가중치 및 학습 스크립트
+│ │ ├─ pretrained/ # 사전 학습 모델
+│ │ │ └─ yolov8s.pt
+│ │ ├─ trained/ # 학습 완료 모델 (해상도별)
+│ │ │ ├─ res320/weights/
+│ │ │ ├─ res480/weights/
+│ │ │ └─ res640/weights/
+│ │ └─ training/ # 학습 스크립트
+│ │ ├─ train320.py
+│ │ ├─ train480.py
+│ │ └─ train640.py
+│ ├─ results/ # 학습/추론 결과
+│ │ ├─ res320/
+│ │ ├─ res480/
+│ │ └─ res640/
+│ └─ utils/
+│ └─ data_download.py
+│
+├─ robotics/ # 로봇 시뮬레이션 관련 파일
+│ ├─ imgs/ # 용접 템플릿 이미지
+│ ├─ objects/ # 용접 템플릿 3D 모델
+│ │ ├─ WeldTpl_01/
+│ │ ├─ WeldTpl_02/
+│ │ ├─ WeldTpl_03/
+│ │ ├─ WeldTpl_04/
+│ │ ├─ WeldTpl_05/
+│ │ ├─ WeldTpl_06/
+│ │ ├─ WeldTpl_07/
+│ │ ├─ WeldTpl_08/
+│ │ └─ WeldTpl_09/
+│ └─ scripts/ # 시뮬레이션 제어 스크립트
+│ ├─ PartsToConveyor.py
+│ ├─ PartsToPallet.py
+│ ├─ PrepareSimulation.py
+│ ├─ SetSimulationParams.py
+│ └─ SimulateCamera.py
+│
+├─ .gitignore
+└─ README.md
 
 ## 📊 실험 결과 (AI Performance)
 
@@ -68,13 +86,17 @@ pip install -r requirements.txt
 ```
 
 ### **2. 시뮬레이션 실행**
+RoboDK에서 시뮬레이션 환경을 구성합니다.  
+1. `robotics/objects` 폴더에 있는 8개의 용접 객체(WeldTpl_01 ~ WeldTpl_08)를 RoboDK 환경에 추가합니다.  
+2. `robotics/scripts` 폴더 내 4개의 스크립트 파일을 불러와 프로그램을 생성한 후 실행합니다.
 
-1. **RoboDK 실행**: `config/station_env.rdk` 파일을 로드합니다.
-2. **파라미터 설정**: `src/SetSimulationParams.py`를 실행하여 공정 조건을 입력합니다.
-3. **통합 공정 가동**: `src/PartsToPallet.py`를 실행하면 YOLOv8 모델이 카메라 뷰를 실시간 분석하여 로봇 분류를 시작합니다.
+**프로그램 실행 순서:**
+1. Call `PrepareSimulation` – 시뮬레이션 초기 환경 설정
+2. Call `SimulateCamera` – 카메라 시뮬레이션
+3. Run `MoveConveyor` – 컨베이어 이동
+4. Run `PartsToConveyor` – 부품 컨베이어로 이동
+5. Call `PartsToPallet` – 부품 팔레트로 이동
 
-
-## 📜 라이선스 및 참고 문헌
-
-- 본 프로젝트는 **Kaggle Welding Defect Dataset**을 활용하였습니다.
-- 자세한 이론적 배경은 `docs/report_final.pdf`를 참조해 주시기 바랍니다.
+## 📜 참고 자료
+- 본 프로젝트에서는 **Kaggle Welding Defect Dataset**을 활용하였습니다.
+- RoboDK 무료 버전 사용으로 인해 시뮬레이션 파일 자체는 저장되지 않아, 스크립트만 제공합니다.
