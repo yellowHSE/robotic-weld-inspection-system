@@ -1,0 +1,11 @@
+# welding.yaml
+path: C:\Users\USER\Desktop\두견\kaggle_data # 데이터가 들어있는 폴더 경로
+train: train/images
+val: valid/images  # 폴더명이 vaild(vaildation)로 되어 있다면 맞춰서 수정
+test: test/images
+
+# 보고서 3.1절에 명시된 3개 클래스 [cite: 77]
+names:
+  0: Bad Weld
+  1: Good Weld
+  2: Defect
